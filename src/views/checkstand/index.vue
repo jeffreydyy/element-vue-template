@@ -48,94 +48,13 @@
         <el-button type="primary" @click="handleFilter">查询</el-button>
       </el-form-item>
     </el-form> 
-
-    <div class="dataInfo">
-      <el-row :gutter="40" class="panel-group">
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-          <div class="card-panel">
-            <div class="card-panel-icon-wrapper icon-message">
-              <svg-icon icon-class="money" class-name="card-panel-icon"/>
-            </div>
-            <div class="card-panel-description">
-              <div class="card-panel-text">订单总额</div>
-              <div class="card-panel-num">
-                <strong>153.5</strong>
-                <small>元</small>
-              </div>
-              <div class="card-indent-num">
-                <small>15</small>
-                <small>笔</small>
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-          <div class="card-panel">
-            <div class="card-panel-icon-wrapper icon-shopping">
-              <svg-icon icon-class="money" class-name="card-panel-icon"/>
-            </div>
-            <div class="card-panel-description">
-              <div class="card-panel-text">成交订单总额</div>
-              <div class="card-panel-num">
-                <strong>153.5</strong>
-              </div>
-              <div class="card-indent-num">
-                <small>15</small>
-                <small>笔</small>
-              </div>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-
-    <div class="tab-container" v-if="tableShow">
-      <el-button
-        class="downBtn"
-        type="primary"
-        size="mini"
-        @click="export2Excel"
-        icon="el-icon-download"
-      >下载</el-button>
-      <el-tabs
-        v-model="activeName"
-        @tab-click="tabChangeState"
-        style="margin-top:15px;"
-        type="border-card"
-      > 
-        <el-tab-pane
-          v-for="item in tabMapOptions"
-          :label="item.label"
-          :key="item.key"
-          :name="item.key"
-        >
-          <keep-alive>
-            <tab-pane
-              v-if="activeName==item.key"
-              :propvalue="form"
-              :types="item.key"
-              :tableValue="querylist"
-              @change="itemValue(item.key)"
-            />
-          </keep-alive>
-        </el-tab-pane> 
-      </el-tabs>
-    </div>
+  
   </div>
 </template>
 
-<script>
-// import Vue from 'vue'
+<script> 
 import axios from "axios"; 
-import tabPane from "./components/tabPane";
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-// Vue.prototype.$http = axios
-
 export default {
-  components: {
-    // CountTo,
-    tabPane
-  },
   data() {
     return {
       formOptions: [
@@ -215,41 +134,7 @@ export default {
     };
   },
   created() {},
-  methods: {
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]));
-    },
-    export2Excel() {
-      require.ensure([], () => {
-        const { export_json_to_excel } = require("@/vendor/Export2Excel");
-        const tHeader = [
-          "商户名称",
-          "商品名称",
-          "商户编号",
-          "用户设备号",
-          "日期"
-        ];
-        const filterVal = [
-          "name",
-          "name",
-          "id",
-          "cell",
-          "dob"
-        ];
-        const list = this.querylist.lists;
-        const data = this.formatJson(filterVal, list);
-
-            console.log(data)
-        for(let i=0;i<data.length;i++){
-            data[i][0] = data[i][0].first 
-            data[i][1] =  data[i][1].title
-            data[i][2] =  data[i][2].value
-            data[i][4] =  data[i][4].date
-        }
-
-        export_json_to_excel(tHeader, data, "商品管理列表");
-      });
-    },
+  methods: { 
     tabChangeState(tab) {
       console.log(tab.name);
       this.querylist.gender = tab.name;
